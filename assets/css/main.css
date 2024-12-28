@@ -1388,7 +1388,7 @@ section,
 --------------------------------------------------------------*/
 
 .stats {
-  background-color: var(--accent-color);
+  background-color: #0d0a31;
 }
 
 /*--------------------------------------------------------------
@@ -1442,7 +1442,7 @@ section,
 }
 
 .star{
-  background-color: var(--accent-color);
+  background-color: #0d0a31;
   color: #ffffff;
 }
 

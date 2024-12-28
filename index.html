@@ -74,21 +74,22 @@
           <div class="row gy-4 justify-content-between">
             <!-- Formulário -->
             <div class="col-lg-4 order-last order-lg-last" data-aos="zoom-out" data-aos-delay="100">
-              <form class="p-4 bg-light rounded shadow-sm form-container">
+              <form id="scheduleForm" class="p-4 bg-light rounded shadow-sm form-container" id="scheduleForm">
                 <h4 class="text-left text-dark mb-3">Agende uma aula experimental 100% gratuita.</h4>
                 <div class="mb-3">
-                  <input type="text" class="form-control" id="name" placeholder="Nome*">
+                  <input type="text" class="form-control" id="name" placeholder="Nome*" required>
                 </div>
                 <div class="mb-3">
-                  <input type="email" class="form-control" id="email" placeholder="E-mail*">
+                  <input type="email" class="form-control" id="email" placeholder="E-mail*" required>
+                  <small id="emailError" class="text-danger"></small>
                 </div>
                 <div class="mb-3">
-                  <input type="tel" id="phone" class="form-control" placeholder="Whatsapp*" />
+                  <input type="tel" id="phone" class="form-control" placeholder="Whatsapp*" required>
+                  <small id="phoneError" class="text-danger"></small>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Quero mais informações</button>
               </form>
             </div>
-          
             <!-- Texto inicial -->
             <div class="col-lg-6 d-flex flex-column justify-content-center order-first order-lg-first" data-aos="fade-in">
               <h1>Curso de inglês do básico ao avançado para <span>Adultos</span></h1>
@@ -908,6 +909,9 @@
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
     <script src="assets/js/cookies.js"></script>
+    <script src="assets/js/form.js"></script>
+    <script src="assets/js/send_sheet.js"></script>
+
     <script>
       var input = document.querySelector("#phone");
       var iti = window.intlTelInput(input, {
@@ -917,10 +921,10 @@
       });
     
       // Atualiza o valor do campo com o DDD automaticamente ao selecionar o país
-      input.addEventListener('input', function () {
-        var number = iti.getNumber(); // Obtém o número formatado com o código de país
-        input.value = number; // Atualiza o campo com o número formatado
-      });
+      // input.addEventListener('input', function () {
+      //   var number = iti.getNumber(); // Obtém o número formatado com o código de país
+      //   input.value = number; // Atualiza o campo com o número formatado
+      // });
     </script>
 
     <div id="cookiePopup" class="cookie-popup">
