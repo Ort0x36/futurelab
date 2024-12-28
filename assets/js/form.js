@@ -8,64 +8,100 @@ document.addEventListener("DOMContentLoaded", () => {
 	const phoneError = document.getElementById("phoneError");
 	const nameError = document.getElementById("nameError");
 
-	emailInput.addEventListener("input", () => {
+	const validateEmail = () => {
 		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		if (!emailPattern.test(emailInput.value)) {
 			emailError.textContent = "Por favor, insira um e-mail válido.";
+			return false;
 		} else {
 			emailError.textContent = "";
+			return true;
 		}
-	});
+	};
 
-	// Formatação do número de telefone
-	// phoneInput.addEventListener("input", () => {
-	// 	let value = phoneInput.value.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
-	
-	// 	// Limita o número de dígitos a 11 (DDD + número)
-	// 	if (value.length > 11) {
-	// 		value = value.slice(0, 11);
-	// 	}
-	
-	// 	// Formata o número
-	// 	if (value.length > 2) {
-	// 		value = value.replace(/^(\d{2})(\d)/, "($1) $2"); // Adiciona o DDD
-	// 	}
-	// 	if (value.length > 7) {
-	// 		value = value.replace(/(\d{5})(\d{4})$/, "$1-$2"); // Adiciona o traço no número
-	// 	}
-	
-	// 	phoneInput.value = value; // Atualiza o campo com o valor formatado
-	// });
-
-	form.addEventListener("submit", (event) => {
-		let isValid = true;
-
-		// Validação de nome
-
-		const trimmedName = nameInput.value.trim(); // Remove espaços em branco no início e no final
+	const validateName = () => {
+		const trimmedName = nameInput.value.trim();
 		if (trimmedName === "" || trimmedName.length < 2) {
-			nameError.textContent =
-				"O nome não deve estar em branco ou ter menos de 2 caracteres.";
-			isValid = false;
+			nameError.textContent = "O nome não deve estar em branco ou ter menos de 2 caracteres.";
+			return false;
+		} else {
+			nameError.textContent = "";
+			return true;
 		}
-		// Verifica se o DDD foi digitado
-		// if (!/^\(\d{2}\)/.test(phoneInput.value)) {
-		// 	phoneError.textContent = "Por favor, inclua o DDD no número de telefone.";
-		// 	isValid = false;
-		// } else {
-		// 	phoneError.textContent = "";
-		// }
+	};
 
-		// Verifica se o e-mail está válido
-		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		if (!emailPattern.test(emailInput.value)) {
-			emailError.textContent = "Por favor, insira um e-mail válido.";
-			isValid = false;
+	const validatePhone = () => {
+		const phoneValue = phoneInput.value.replace(/\D/g, ""); 
+		if (phoneValue === "") {
+			phoneError.textContent = "O campo de telefone é obrigatório.";
+			return false;
+		} else {
+			phoneError.textContent = "";
+			phoneInput.value = phoneValue;
+			return true;
+		}
+	};
+
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+
+    const submitButton = document.getElementById('submitButton');
+
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...';
+		
+		const isNameValid = validateName();
+		const isEmailValid = validateEmail();
+		const isPhoneValid = validatePhone();
+
+		if (!isNameValid || !isEmailValid || !isPhoneValid) {
+			return;
 		}
 
-		// Bloqueia o envio do formulário se houver erros
-		if (!isValid) {
-			event.preventDefault();
+		await sendData({
+			name: nameInput.value.trim(),
+			email: emailInput.value,
+			phone: phoneInput.value
+		});
+
+		setTimeout(() => {
+      submitButton.disabled = false;
+      submitButton.innerHTML = 'Quero mais informações';
+    }, 2000);
+
+		clearForm();
+		redirectToStarterPage();
+	};
+
+	const sendData = async (data) => {
+		const response = await fetch("https://script.google.com/macros/s/AKfycbwxQx1AB4aykBUXcwnWKMFzAQxnx2lrD0PjB3z7l5hltYLzatznaCVoKjwFtSEawoJU/exec", {
+			method: "POST",
+			mode: "no-cors",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(data)
+		});
+		return response;
+	};
+
+	const clearForm = () => {
+		form.reset();
+		emailError.textContent = "";
+		phoneError.textContent = "";
+		nameError.textContent = "";
+	};
+
+	const redirectToStarterPage = () => {
+		window.location.href = './starter-page.html';
+	};
+
+	emailInput.addEventListener("input", validateEmail);
+	nameInput.addEventListener("input", () => {
+		const trimmedValue = nameInput.value.trim();
+		if (trimmedValue === "") {
+			nameError.textContent = "O nome não pode ser apenas espaços em branco.";
+		} else {
+			nameError.textContent = "";
 		}
 	});
+	form.addEventListener("submit", handleSubmit);
 });

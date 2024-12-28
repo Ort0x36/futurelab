@@ -74,20 +74,24 @@
           <div class="row gy-4 justify-content-between">
             <!-- Formulário -->
             <div class="col-lg-4 order-last order-lg-last" data-aos="zoom-out" data-aos-delay="100">
-              <form id="scheduleForm" class="p-4 bg-light rounded shadow-sm form-container" id="scheduleForm">
+              <form id="scheduleForm" class="p-4 bg-light rounded shadow-sm form-container">
                 <h4 class="text-left text-dark mb-3">Agende uma aula experimental 100% gratuita.</h4>
                 <div class="mb-3">
                   <input type="text" class="form-control" id="name" placeholder="Nome*" required>
+                  <small id="nameError" class="text-danger"></small>
                 </div>
                 <div class="mb-3">
                   <input type="email" class="form-control" id="email" placeholder="E-mail*" required>
                   <small id="emailError" class="text-danger"></small>
                 </div>
                 <div class="mb-3">
-                  <input type="tel" id="phone" class="form-control" placeholder="Whatsapp*" required>
+                  <input type="tel" id="phone" class="form-control" maxlength="11" placeholder="(XX) XXXXX-XXXX" required>
                   <small id="phoneError" class="text-danger"></small>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Quero mais informações</button>
+                <button type="submit" id="submitButton" class="btn btn-primary w-100">
+                  Quero mais informações
+                </button>
+                <small id="submitError" class="text-danger"></small>
               </form>
             </div>
             <!-- Texto inicial -->
@@ -910,7 +914,7 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/cookies.js"></script>
     <script src="assets/js/form.js"></script>
-    <script src="assets/js/send_sheet.js"></script>
+    <!-- <script src="assets/js/send_sheet.js"></script> -->
 
     <script>
       var input = document.querySelector("#phone");
